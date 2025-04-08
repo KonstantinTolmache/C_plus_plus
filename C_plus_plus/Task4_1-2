@@ -1,0 +1,123 @@
+﻿#include <iostream>
+#include <cstring> // äëÿ strlen, strcmp, strcpy
+#include <locale> // Äëÿ ïîääåðæêè ðóññêîãî ÿçûêà
+
+
+// Âàðèàíò 1: Îïðåäåëåíèå äëèíû ñòðîêè ñ èñïîëüçîâàíèåì strlen
+ int dlina1(const char* str) {
+    return strlen(str);
+}
+
+// Âàðèàíò 2: Îïðåäåëåíèå äëèíû ñòðîêè ñ èñïîëüçîâàíèåì öèêëà while
+int dlina2(const char* str) {
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+
+// Âàðèàíò 3: Îïðåäåëåíèå äëèíû ñòðîêè ñ èñïîëüçîâàíèåì óêàçàòåëåé
+int dlina3(const char* str) {
+    const char* ptr = str;
+    while (*ptr) {
+        ptr++;
+    }
+    return ptr - str;
+}
+
+
+// Ôóíêöèÿ êîïèðîâàíèÿ ñòðîêè
+void kopir(char* str1, const char* str2) {
+    int i = 0;
+    while (str2[i] != '\0') {
+        str1[i] = str2[i]; // Êîïèðóåì ñèìâîëû
+        i++;
+    }
+    str1[i] = '\0'; // Çàâåðøàåì ñòðîêó
+}
+
+// Ôóíêöèÿ ñðàâíåíèÿ ñòðîê
+void sravn(const char* str1, const char* str2) {
+    if (strcmp(str1, str2) == 0) {
+        std::cout << "Ñòðîêè îäèíàêîâû" << std::endl;
+    }
+    else {
+        std::cout << "Ñòðîêè ðàçíûå" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ ñöåïëåíèÿ ñòðîê
+void konkat(char* str1, const char* str2) {
+    int i = 0, j = 0;
+    while (str1[i] != '\0') { // Èùåì êîíåö ïåðâîé ñòðîêè
+        i++;
+    }
+    while (str2[j] != '\0') { // Äîáàâëÿåì ñèìâîëû âòîðîé ñòðîêè
+        str1[i] = str2[j];
+        i++;
+        j++;
+    }
+    str1[i] = '\0'; // Çàâåðøàåì ñòðîêó
+}
+
+// Ôóíêöèÿ îïðåäåëåíèÿ äëèíû ñòðîêè
+void dlina(const char* str) {
+    std::cout << "Äëèíà ñòðîêè \"" << str << "\" = " << strlen(str) << std::endl;
+}
+
+int main11(void) {
+    setlocale(LC_ALL, "Russian"); // Óñòàíàâëèâàåì ëîêàëèçàöèþ äëÿ ðóññêîãî ÿçûêà
+
+    std::cout << "\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m" << std::endl; // Çåë¸íûé öâåò ÔÈÎ Ãðóïïà
+
+    // Èíèöèàëèçàöèÿ ñòðîê
+    char str1[100] = "qwerty", str2[] = "1234567890";
+
+    // Âûâîä íà÷àëüíûõ çíà÷åíèé ñòðîê
+    std::cout << "Íà÷àëüíîå çíà÷åíèå str1= \033[32m" << str1 << "\033[0m, str2= \033[32m" << str2 << "\033[0m" << std::endl;
+
+
+    std::cout << "Äëèíà str1 (\033[32m strlen \033[0m): \033[32m" << dlina1(str1) << "\033[0m" << std::endl;
+
+    std::cout << "Äëèíà str2 (\033[32m while \033[0m): \033[32m" << dlina2(str2) << "\033[0m" << std::endl;
+    std::cout << "Äëèíà str1 (\033[32m óêàçàòåëè \033[0m): \033[32m" << dlina3(str1) << "\033[0m" << std::endl << std::endl;   
+
+   
+    dlina(str1);
+    dlina(str2);
+    std::cout << std::endl;
+
+    sravn(str1, str2);
+
+    // Êîïèðîâàíèå str2 â str1
+    kopir(str1, str2);
+    std::cout << "ðåçóëüòàò êîïèðîâàíèÿ: \033[32mstr1= " << str1 << ", str2= " << str2 << "\033[0m" << std::endl;
+    dlina(str1);
+    dlina(str2);
+    // Ñðàâíåíèå str1 è str2 ïîñëå êîïèðîâàíèÿ
+    std::cout << "\033[32m";  // Óñòàíàâëèâàåì çåë¸íûé öâåò
+    sravn(str1, str2);        // Âûçûâàåì ôóíêöèþ ñðàâíåíèÿ (îíà ñàìà ïå÷àòàåò ðåçóëüòàò)
+    std::cout << "\033[0m";   // Ñáðàñûâàåì öâåò
+
+    std::cout << std::endl;    
+
+    // Ïðèñâàèâàíèå str1 çàíîâî "qwerty"
+    kopir(str1, "qwerty");
+    std::cout << "ðåçóëüòàò ñðàâíåíèÿ: \033[32mstr1= " << str1 << ", str2= " << str2 << "\033[0m" << std::endl;
+    dlina(str1);
+    dlina(str2);
+    std::cout << std::endl;
+
+    // Ñðàâíåíèå ñòðîê ïîñëå âîññòàíîâëåíèÿ str1
+    sravn(str1, str2);
+
+    // Ñöåïëåíèå str1 è str2
+    konkat(str1, str2);
+    std::cout << "ðåçóëüòàò ñöåïëåíèÿ: \033[32mstr1= " << str1 << ", str2= " << str2 << "\033[0m" << std::endl;
+    dlina(str1);
+    dlina(str2);
+    std::cout << std::endl;
+
+    return 0;
+}

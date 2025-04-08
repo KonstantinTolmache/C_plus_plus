@@ -1,0 +1,23 @@
+﻿//#include <stdio.h>
+
+// Ýòîò êîä íå ðàáîòàåò èçíà÷àëüíî!
+//int main15(void) {
+    //char ch, name[50];
+    //FILE* in;
+
+    //printf("Ââåäèòå èìÿ ôàéëà äëÿ ïðîñìîòðà: ");
+    // scanf("%49s", name); 
+
+    // in = fopen(name, "r");
+    //if (in == NULL) {
+    //    printf("Ôàéë %s íå îòêðûò\n", name);
+    //    return 1; 
+    //}
+
+    //while ((ch = getc(in)) != EOF) { 
+    //    putchar(ch);
+    //}
+
+    //fclose(in); // 
+    //return 0;
+//}

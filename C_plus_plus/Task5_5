@@ -1,0 +1,72 @@
+﻿#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+//Êëþ÷ øèôðîâàíèÿ c=c^key[i]
+
+// Ôóíêöèÿ äëÿ øèôðîâàíèÿ
+void encrypt_file(FILE* in, FILE* out, const char* key) {
+    int ch;  // Äîëæåí áûòü int, ÷òîáû êîððåêòíî îáðàáàòûâàòü EOF
+    size_t key_len = strlen(key);
+    size_t key_index = 0;
+
+    while ((ch = fgetc(in)) != EOF) {  // ×èòàåì áàéò
+        unsigned char encrypted_char = (unsigned char)ch ^ key[key_index];  // XOR ñ êëþ÷îì
+        fputc(encrypted_char, out);  // Çàïèñûâàåì â ôàéë
+        key_index = (key_index + 1) % key_len;  // Ïåðåõîä ê ñëåäóþùåìó ñèìâîëó êëþ÷à
+    }
+}
+
+int main20() {
+    setlocale(LC_ALL, ""); // Ëîêàëèçàöèÿ
+
+    char key[256];
+
+    // Ââîä êëþ÷à
+    printf("Ââåäèòå êëþ÷ øèôðîâàíèÿ: ");
+    if (fgets(key, sizeof(key), stdin) == NULL) {
+        printf("Îøèáêà ïðè ââîäå êëþ÷à.\n");
+        return 1;
+    }
+
+    // Óáèðàåì ñèìâîë íîâîé ñòðîêè
+    key[strcspn(key, "\n")] = '\0';
+
+    if (strlen(key) == 0) {
+        printf("Êëþ÷ íå ìîæåò áûòü ïóñòûì.\n");
+        return 1;
+    }
+
+
+
+    const char* input_file = "C:\\Users\\Admin\\source\\repos\\Cii\\Cii\\ShifrFile.txt";
+    // Ôàèë êîòîðûé îáðàáîòàë âòîðîé ðàç(1 ðàç çàøèôðîâàë(ShifrFile), à âòîðîé ðàç ðàñøèôðîâàë è ñîçäàë åù¸ îäèí text ñ íàçâàíèåì (ShifrFile1))
+    const char* output_file = "C:\\Users\\Admin\\source\\repos\\Cii\\Cii\\ShifrFile1.txt";
+
+    FILE* in;
+    FILE* out;
+
+    // Îòêðûâàåì âõîäíîé ôàéë â áèíàðíîì ðåæèìå
+    if (fopen_s(&in, input_file, "rb") != 0) {
+        perror("Îøèáêà îòêðûòèÿ èñõîäíîãî ôàéëà");
+        return 1;
+    }
+
+    // Îòêðûâàåì âûõîäíîé ôàéë â áèíàðíîì ðåæèìå
+    if (fopen_s(&out, output_file, "wb") != 0) {
+        perror("Îøèáêà îòêðûòèÿ ôàéëà äëÿ çàïèñè");
+        fclose(in);
+        return 1;
+    }
+
+    // Çàïóñêàåì øèôðîâàíèå
+    encrypt_file(in, out, key);
+
+    fclose(in);
+    fclose(out);
+
+    printf("Ôàéë çàøèôðîâàí è çàïèñàí â '%s'\n", output_file);
+    return 0;
+}

@@ -1,0 +1,95 @@
+﻿#include <stdio.h>
+#include <locale.h>
+#include <wchar.h>
+#include <fcntl.h>
+#include <io.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+// Ôóíêöèÿ äëÿ çàìåíû ïàòòåðíîâ âèäà -1-, -2-, -3- íà 1, 2, 3 è ò.ä.
+void process_page(FILE* in, FILE* out) {
+    wchar_t line[1024]; // Áóôåð äëÿ ñòðîêè
+    int counter = 1; // Ñ÷¸ò÷èê äëÿ çàìåíû íà öèôðû
+
+    while (fgetws(line, sizeof(line) / sizeof(wchar_t), in)) {  // ×òåíèå ñòðîêè èç ôàéëà
+        // Îáðàáîòêà ñèìâîëà \f
+        wchar_t* pos = line;
+        while ((pos = wcsstr(pos, L"\\f")) != NULL) {
+            // Çàìåíÿåì \f íà \n\n
+            wmemmove(pos + 1, pos + 2, wcslen(pos + 2) + 1);  // Ñäâèãàåì ñòðîêó ïîñëå \f
+            pos[0] = L'\n';  // Çàìåíÿåì \f íà \n
+            pos[1] = L'\n';  // Äîáàâëÿåì âòîðîé \n
+            pos += 2;  // Äâèãàåìñÿ ê ñëåäóþùåé ÷àñòè ñòðîêè
+        }
+
+        // Íîâûé áóôåð äëÿ ñòðîêè ïîñëå îáðàáîòêè
+        wchar_t new_line[1024];
+        wchar_t* new_pos = new_line; // Óêàçàòåëü íà íîâûé áóôåð
+
+        pos = line;  // Ñáðîñèì óêàçàòåëü íà íà÷àëî ñòðîêè
+
+        while (*pos) {
+            // Èùåì ïàòòåðí -÷èñëî-
+            if (*pos == L'-' && iswdigit(*(pos + 1))) {
+                pos++; // Ïðîïóñêàåì ìèíóñ
+
+                // Ñ÷èòûâàåì öèôðû, ïîêà âñòðå÷àåì öèôðû
+                while (iswdigit(*pos)) {
+                    pos++;
+                }
+
+                // Ïðîïóñêàåì çàêðûâàþùèé ìèíóñ
+                if (*pos == L'-') {
+                    pos++;
+                }
+
+                // Çàìåíÿåì ïàòòåðí íà òåêóùèé ñ÷¸ò÷èê (áåç ìèíóñà)
+                new_pos += swprintf(new_pos, 10, L"%d", counter++);
+            }
+            else {
+                // Êîïèðóåì îñòàëüíûå ñèìâîëû áåç èçìåíåíèé
+                *new_pos++ = *pos++;
+            }
+        }
+
+        // Çàâåðøàåì ñòðîêó
+        *new_pos = L'\0';
+
+        // Çàïèñûâàåì ñòðîêó â âûõîäíîé ôàéë
+        fputws(new_line, out);
+    }
+}
+
+int main19() {
+    setlocale(LC_ALL, "");  // Íàñòðîéêà ëîêàëèçàöèè
+    _setmode(_fileno(stdout), _O_U16TEXT);  // Ïåðåêëþ÷åíèå êîíñîëè íà UTF-16 äëÿ âûâîäà Unicode
+
+    FILE* in;
+    FILE* out;
+    char name_in[] = "C:\\Users\\Admin\\source\\repos\\Cii\\Cii\\TestPerenos.txt";  // Ïóòü ê èñõîäíîìó ôàéëó
+    char name_out[] = "C:\\Users\\Admin\\source\\repos\\Cii\\Cii\\Processed.txt";  // Ïóòü ê ôàéëó äëÿ çàïèñè ðåçóëüòàòà
+
+    // Îòêðûòèå èñõîäíîãî ôàéëà äëÿ ÷òåíèÿ
+    if (fopen_s(&in, name_in, "r, ccs=UTF-8") != 0) {
+        perror("Îøèáêà îòêðûòèÿ ôàéëà äëÿ ÷òåíèÿ");
+        return 1;
+    }
+
+    // Îòêðûòèå ôàéëà äëÿ çàïèñè ðåçóëüòàòà
+    if (fopen_s(&out, name_out, "w, ccs=UTF-8") != 0) {
+        perror("Îøèáêà îòêðûòèÿ ôàéëà äëÿ çàïèñè");
+        fclose(in);
+        return 1;
+    }
+
+    wprintf(L"Ôàéë '%hs' îòêðûò óñïåøíî!\n\n", name_in);
+
+    process_page(in, out);  // Îáðàáîòêà òåêñòà
+
+    fclose(in);
+    fclose(out);
+
+    wprintf(L"Îáðàáîòêà çàâåðøåíà, ðåçóëüòàò çàïèñàí â '%hs'\n", name_out);
+    return 0;
+}

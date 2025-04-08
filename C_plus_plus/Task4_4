@@ -1,0 +1,82 @@
+﻿#include <iostream>
+#include <cstring>  // Äëÿ strlen, strcmp, strcpy_s, strcat_s
+#include <locale>   // Äëÿ ïîääåðæêè ðóññêîãî ÿçûêà
+#include <cstdlib>  // Äëÿ malloc, calloc è free
+
+// Ôóíêöèÿ îïðåäåëåíèÿ äëèíû ñòðîêè
+int dlina6(const char* str) {
+    return strlen(str);
+}
+
+// Ôóíêöèÿ êîïèðîâàíèÿ ñòðîêè 
+void kopir6(char* str1, const char* str2, size_t size) {
+    strcpy_s(str1, size, str2);
+}
+
+// Ôóíêöèÿ ñðàâíåíèÿ ñòðîê
+inline void sravn6(const char* str1, const char* str2) {
+    if (strcmp(str1, str2) == 0) {
+        std::cout << "Ñòðîêè îäèíàêîâû" << std::endl;
+    }
+    else {
+        std::cout << "Ñòðîêè ðàçíûå" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ ñöåïëåíèÿ ñòðîê 
+void konkat6(char* str1, const char* str2, size_t size) {
+    strcat_s(str1, size, str2);
+}
+
+int main13() {
+    setlocale(LC_ALL, "Russian"); // Óñòàíàâëèâàåì ëîêàëèçàöèþ äëÿ ðóññêîãî ÿçûêà
+
+    std::cout << "\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m" << std::endl; // Çåë¸íûé öâåò ÔÈÎ Ãðóïïà
+
+    // Äèíàìè÷åñêîå âûäåëåíèå ïàìÿòè ñ èñïîëüçîâàíèåì calloc
+    char* str1 = (char*)calloc(100, sizeof(char));  // Èñïîëüçóåì calloc
+    char* str2 = (char*)calloc(100, sizeof(char));  // Èñïîëüçóåì calloc
+
+    if (!str1 || !str2) {
+        std::cerr << "Îøèáêà âûäåëåíèÿ ïàìÿòè!" << std::endl;
+        return 1;
+    }
+
+    // Èíèöèàëèçàöèÿ ñòðîê
+    kopir6(str1, "qwerty", 100);
+    kopir6(str2, "1234567890", 100);
+
+    // Âûâîä íà÷àëüíûõ çíà÷åíèé ñòðîê
+    std::cout << "Íà÷àëüíîå çíà÷åíèå str1 = \033[32m" << str1
+        << "\033[0m, str2 = \033[32m" << str2 << "\033[0m" << std::endl;
+
+    std::cout << "Äëèíà str1: \033[32m" << dlina6(str1) << "\033[0m" << std::endl;
+    std::cout << "Äëèíà str2: \033[32m" << dlina6(str2) << "\033[0m" << std::endl;
+
+    sravn6(str1, str2);
+
+    // Êîïèðîâàíèå str2 â str1
+    kopir6(str1, str2, 100);
+    std::cout << "Ðåçóëüòàò êîïèðîâàíèÿ: \033[32mstr1= " << str1
+        << ", str2= " << str2 << "\033[0m" << std::endl;
+
+    sravn6(str1, str2);
+
+    // Ïðèñâàèâàíèå str1 çàíîâî "qwerty"
+    kopir6(str1, "qwerty", 100);
+    std::cout << "Ðåçóëüòàò ñðàâíåíèÿ: \033[32mstr1= " << str1
+        << ", str2= " << str2 << "\033[0m" << std::endl;
+
+    sravn6(str1, str2);
+
+    // Ñöåïëåíèå ñòðîê
+    konkat6(str1, str2, 100);
+    std::cout << "Ðåçóëüòàò ñöåïëåíèÿ: \033[32mstr1= " << str1
+        << ", str2= " << str2 << "\033[0m" << std::endl;
+
+    // Îñâîáîæäåíèå ïàìÿòè
+    free(str1);
+    free(str2);
+
+    return 0;
+}

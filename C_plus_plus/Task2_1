@@ -1,0 +1,26 @@
+﻿#include <iostream>  
+#include <iomanip>  
+#include <cstdlib>  
+#include <conio.h>  
+
+#define N 5  
+
+void main5() {
+    setlocale(LC_ALL, "Russian"); // Óñòàíàâëèâàåì ðóññêóþ ëîêàëü äëÿ ïîääåðæêè êèðèëëèöû â êîíñîëè
+    std::cout << "\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m" << std::endl; // Çåë¸íûé öâåò ÔÈÎ ÃÐóïïà
+    float m[N][N];
+    int i, j;
+
+    for (i = 0; i < N; i++)
+        for (j = 0; j < N; j++)
+            m[i][j] = rand() / 10.0;
+
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++)
+            std::cout << std::setw(8) << std::setprecision(5) << m[i][j];
+        std::cout << std::endl;
+    }
+
+    _getch();
+  
+}

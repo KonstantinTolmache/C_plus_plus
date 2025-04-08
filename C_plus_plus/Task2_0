@@ -1,0 +1,389 @@
+﻿#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <conio.h>
+#include <cmath>  // Äëÿ èñïîëüçîâàíèÿ fabs
+
+#define N 5
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìóìà ìàòðèöû
+float minMatrix(float m[N][N]) {
+    float minVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (m[i][j] < minVal) {
+                minVal = m[i][j];
+            }
+        }
+    }
+    return minVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìóìà ìàòðèöû
+float maxMatrix(float m[N][N]) {
+    float maxVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (m[i][j] > maxVal) {
+                maxVal = m[i][j];
+            }
+        }
+    }
+    return maxVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìóìà íèæíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float maxLowerTriangle(float m[N][N]) {
+    float maxVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j <= i; j++) {
+            if (m[i][j] > maxVal) {
+                maxVal = m[i][j];
+            }
+        }
+    }
+    return maxVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìóìà âåðõíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float maxUpperTriangle(float m[N][N]) {
+    float maxVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = i; j < N; j++) {
+            if (m[i][j] > maxVal) {
+                maxVal = m[i][j];
+            }
+        }
+    }
+    return maxVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìóìà íèæíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float minLowerTriangle(float m[N][N]) {
+    float minVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j <= i; j++) {
+            if (m[i][j] < minVal) {
+                minVal = m[i][j];
+            }
+        }
+    }
+    return minVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìóìà âåðõíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float minUpperTriangle(float m[N][N]) {
+    float minVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        for (int j = i; j < N; j++) {
+            if (m[i][j] < minVal) {
+                minVal = m[i][j];
+            }
+        }
+    }
+    return minVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìóìà ãëàâíîé äèàãîíàëè
+float minMainDiagonal(float m[N][N]) {
+    float minVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        if (m[i][i] < minVal) {
+            minVal = m[i][i];
+        }
+    }
+    return minVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìóìà ãëàâíîé äèàãîíàëè
+float maxMainDiagonal(float m[N][N]) {
+    float maxVal = m[0][0];
+    for (int i = 0; i < N; i++) {
+        if (m[i][i] > maxVal) {
+            maxVal = m[i][i];
+        }
+    }
+    return maxVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìóìà âòîðîñòåïåííîé äèàãîíàëè
+float minSecondaryDiagonal(float m[N][N]) {
+    float minVal = m[0][N - 1];
+    for (int i = 0; i < N; i++) {
+        if (m[i][N - i - 1] < minVal) {
+            minVal = m[i][N - i - 1];
+        }
+    }
+    return minVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìóìà âòîðîñòåïåííîé äèàãîíàëè
+float maxSecondaryDiagonal(float m[N][N]) {
+    float maxVal = m[0][N - 1];
+    for (int i = 0; i < N; i++) {
+        if (m[i][N - i - 1] > maxVal) {
+            maxVal = m[i][N - i - 1];
+        }
+    }
+    return maxVal;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñðåäíåãî àðèôìåòè÷åñêîãî âñåõ ýëåìåíòîâ ìàòðèöû
+float meanMatrix(float m[N][N]) {
+    float sum = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            sum += m[i][j];
+        }
+    }
+    return sum / (N * N);
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñðåäíåãî àðèôìåòè÷åñêîãî ýëåìåíòîâ íèæíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float meanLowerTriangle(float m[N][N]) {
+    float sum = 0;
+    int count = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j <= i; j++) {
+            sum += m[i][j];
+            count++;
+        }
+    }
+    return sum / count;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñðåäíåãî àðèôìåòè÷åñêîãî ýëåìåíòîâ âåðõíåòðåóãîëüíîé ÷àñòè ìàòðèöû
+float meanUpperTriangle(float m[N][N]) {
+    float sum = 0;
+    int count = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = i; j < N; j++) {
+            sum += m[i][j];
+            count++;
+        }
+    }
+    return sum / count;
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñóììû ýëåìåíòîâ êàæäîé ñòðîêè ìàòðèöû
+void sumRows(float m[N][N]) {
+    for (int i = 0; i < N; i++) {
+        float sum = 0;
+        for (int j = 0; j < N; j++) {
+            sum += m[i][j];
+        }
+        std::cout << "Ñóììà\033[33m ñòðîêè \033[32m" << i+1 << ": " << sum << "\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñóììû ýëåìåíòîâ êàæäîãî ñòîëáöà ìàòðèöû
+void sumColumns(float m[N][N]) {
+    for (int j = 0; j < N; j++) {
+        float sum = 0;
+        for (int i = 0; i < N; i++) {
+            sum += m[i][j];
+        }
+        std::cout << "Ñóììà\033[33m ñòîëáöà \033[32m" << j+1 << ": " << sum << "\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìàëüíûõ çíà÷åíèé êàæäîé ñòðîêè
+void minRowValues(float m[N][N]) {
+    for (int i = 0; i < N; i++) {
+        float minVal = m[i][0];
+        for (int j = 1; j < N; j++) {
+            if (m[i][j] < minVal) {
+                minVal = m[i][j];
+            }
+        }
+        std::cout << "\033[31m Ìèíèìàëüíîå \033[0m  çíà÷åíèå â ñòðîêå \033[32m" << i + 1 << ": " << minVal << "\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìèíèìàëüíûõ çíà÷åíèé êàæäîãî ñòîëáöà
+void minColumnValues(float m[N][N]) {
+    for (int j = 0; j < N; j++) {
+        float minVal = m[0][j];
+        for (int i = 1; i < N; i++) {
+            if (m[i][j] < minVal) {
+                minVal = m[i][j];
+            }
+        }
+        std::cout << "\033[31m Ìèíèìàëüíîå \033[0m çíà÷åíèå â ñòîëáöå \033[32m" << j + 1 << ": " << minVal << "\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìàëüíûõ çíà÷åíèé êàæäîé ñòðîêè
+void maxRowValues(float m[N][N]) {
+    for (int i = 0; i < N; i++) {
+        float maxVal = m[i][0];
+        for (int j = 1; j < N; j++) {
+            if (m[i][j] > maxVal) {
+                maxVal = m[i][j];
+            }
+        }
+        std::cout << "\033[31m Ìàêñèìàëüíîå \033[0m çíà÷åíèå â ñòðîêå \033[32m" << i + 1 << ": " << maxVal << "\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ìàêñèìàëüíûõ çíà÷åíèé êàæäîãî ñòîëáöà
+void maxColumnValues(float m[N][N]) {
+    for (int j = 0; j < N; j++) {
+        float maxVal = m[0][j];
+        for (int i = 1; i < N; i++) {
+            if (m[i][j] > maxVal) {
+                maxVal = m[i][j];
+            }
+        }
+        std::cout << "\033[31m Ìàêñèìàëüíîå \033[0m çíà÷åíèå â ñòîëáöå \033[32m" << j + 1 << ": " << maxVal <<"\033[0m" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ äëÿ íàõîæäåíèÿ ýëåìåíòà, íàèáîëåå áëèçêîãî ê ñðåäíåàðèôìåòè÷åñêîìó
+float closestToMean(float m[N][N], float mean) {
+    float closest = m[0][0];
+    float minDiff = fabs(m[0][0] - mean);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            float diff = fabs(m[i][j] - mean);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = m[i][j];
+            }
+        }
+    }
+    return closest;
+}
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñðåäíåãî àðèôìåòè÷åñêîãî çíà÷åíèé êàæäîé ñòðîêè
+void meanRowValues(float m[N][N]) {
+    for (int i = 0; i < N; i++) {
+        float sum = 0;
+        for (int j = 0; j < N; j++) {
+            sum += m[i][j];
+        }
+        float mean = sum / N;
+        std::cout << "\033[31m Ñðåäíåå \033[0m àðèôìåòè÷åñêîå ñòðîêè \033[32m" << i + 1 << ": " << mean << "\033[0m" << std::endl;
+    }
+}
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñðåäíåãî àðèôìåòè÷åñêîãî çíà÷åíèé êàæäîãî ñòîëáöà
+void meanColumnValues(float m[N][N]) {
+    for (int j = 0; j < N; j++) {
+        float sum = 0;
+        for (int i = 0; i < N; i++) {
+            sum += m[i][j];
+        }
+        float mean = sum / N;
+        std::cout << "\033[31m Ñðåäíåå \033[0m àðèôìåòè÷åñêîå ñòîëáöà \033[32m" << j + 1 << ": " << mean << "\033[0m" << std::endl;
+    }
+}
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñóììû ýëåìåíòîâ íèæíåé òðåóãîëüíîé ÷àñòè ìàòðèöû
+float sumLowerTriangle(float m[N][N]) {
+    float sum = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j <= i; j++) {
+            sum += m[i][j];
+        }
+    }
+    return sum;
+}
+// Ôóíêöèÿ äëÿ âû÷èñëåíèÿ ñóììû ýëåìåíòîâ âåðõíåé òðåóãîëüíîé ÷àñòè ìàòðèöû
+float sumUpperTriangle(float m[N][N]) {
+    float sum = 0;
+    for (int i = 0; i < N; i++) {
+        for (int j = i; j < N; j++) {
+            sum += m[i][j];
+        }
+    }
+    return sum;
+}
+
+
+// Ãëàâíàÿ ôóíêöèÿ äëÿ âûâîäà ðåçóëüòàòîâ
+void printMatrix(float m[N][N]) {
+    std::cout << "\033[35m Ìàòðèöà: \033[0m" << std::endl;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            std::cout << std::setw(8) << std::setprecision(5) << m[i][j];
+        }
+        std::cout << std::endl;
+    }
+}
+
+int main15() {
+    setlocale(LC_ALL, "Russian");
+    std::cout << "\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m" << std::endl;
+    float m[N][N];
+    int i, j;
+
+    // Çàïîëíåíèå ìàòðèöû ñëó÷àéíûìè ÷èñëàìè
+    for (i = 0; i < N; i++)
+        for (j = 0; j < N; j++)
+            m[i][j] = rand() / 10.0;
+
+    // Âûâîä ìàòðèöû
+    std::cout << std::endl;
+    printMatrix(m);
+    std::cout << std::endl << std::endl;
+    // Âûçîâ ôóíêöèé äëÿ âû÷èñëåíèÿ ñòàòèñòèê
+    std::cout << "Ìèíèìóì ìàòðèöû: \033[32m" << minMatrix(m) <<"\033[0m" << std::endl;
+    std::cout << "Ìàêñèìóì ìàòðèöû: \033[32m" << maxMatrix(m) << "\033[0m" << std::endl;
+    std::cout << "Ìàêñèìóì íèæíåé òðåóãîëüíîé ÷àñòè:\033[32m " << maxLowerTriangle(m) << "\033[0m" << std::endl;
+    std::cout << "Ìàêñèìóì âåðõíåé òðåóãîëüíîé ÷àñòè: \033[32m" << maxUpperTriangle(m) << "\033[0m" << std::endl;
+    std::cout << "Ìèíèìóì íèæíåé òðåóãîëüíîé ÷àñòè: \033[32m" << minLowerTriangle(m) << "\033[0m" << std::endl;
+    std::cout << "Ìèíèìóì âåðõíåé òðåóãîëüíîé ÷àñòè: \033[32m" << minUpperTriangle(m) << "\033[0m" << std::endl;
+    std::cout << "Ìèíèìóì ãëàâíîé äèàãîíàëè: \033[32m" << minMainDiagonal(m) << "\033[0m" << std::endl;
+    std::cout << "Ìàêñèìóì ãëàâíîé äèàãîíàëè: \033[32m" << maxMainDiagonal(m) << "\033[0m" << std::endl;
+    std::cout << "Ìèíèìóì âòîðîñòåïåííîé äèàãîíàëè: \033[32m" << minSecondaryDiagonal(m) << "\033[0m" << std::endl;
+    std::cout << "Ìàêñèìóì âòîðîñòåïåííîé äèàãîíàëè: \033[32m" << maxSecondaryDiagonal(m) << "\033[0m" << std::endl;
+    std::cout << "Ñðåäíåå àðèôìåòè÷åñêîå ýëåìåíòîâ ìàòðèöû: \033[32m" << meanMatrix(m) << "\033[0m" << std::endl;
+    std::cout << "Ñðåäíåå àðèôìåòè÷åñêîå ýëåìåíòîâ íèæíåé òðåóãîëüíîé ÷àñòè: \033[32m" << meanLowerTriangle(m) << "\033[0m" << std::endl;
+    std::cout << "Ñðåäíåå àðèôìåòè÷åñêîå ýëåìåíòîâ âåðõíåé òðåóãîëüíîé ÷àñòè: \033[32m" << meanUpperTriangle(m) << "\033[0m" << std::endl;
+      
+    //Ñóììà ñòðîêè
+    std::cout << std::endl;
+    sumRows(m);
+    std::cout << std::endl;
+    //Ñóììà ñòîëáöîâ
+    std::cout << std::endl;
+    sumColumns(m);  
+    std::cout << std::endl;  
+
+    // Âûâîä ìèíèìàëüíûõ çíà÷åíèé ïî ñòðîêàì
+    std::cout << std::endl;
+    minRowValues(m);  // Âûâîä ìèíèìàëüíûõ çíà÷åíèé ýëåìåíòîâ â êàæäîé ñòðîêå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ìèíèìàëüíûõ çíà÷åíèé ïî ñòîëáöàì
+    minColumnValues(m);  // Âûâîä ìèíèìàëüíûõ çíà÷åíèé ýëåìåíòîâ â êàæäîì ñòîëáöå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ìàêñèìàëüíûõ çíà÷åíèé ïî ñòðîêàì
+    maxRowValues(m);  // Âûâîä ìàêñèìàëüíûõ çíà÷åíèé ýëåìåíòîâ â êàæäîé ñòðîêå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ìàêñèìàëüíûõ çíà÷åíèé ïî ñòîëáöàì
+    maxColumnValues(m);  // Âûâîä ìàêñèìàëüíûõ çíà÷åíèé ýëåìåíòîâ â êàæäîì ñòîëáöå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ñðåäíèõ çíà÷åíèé ïî ñòðîêàì
+    meanRowValues(m);  // Âûâîä ñðåäíåãî çíà÷åíèÿ ýëåìåíòîâ â êàæäîé ñòðîêå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ñðåäíèõ çíà÷åíèé ïî ñòîëáöàì
+    meanColumnValues(m);  // Âûâîä ñðåäíåãî çíà÷åíèÿ ýëåìåíòîâ â êàæäîì ñòîëáöå ìàòðèöû
+    std::cout << std::endl;
+
+    // Âûâîä ñóììû ýëåìåíòîâ â íèæíåé òðåóãîëüíîé ÷àñòè ìàòðèöû
+    std::cout << "Ñóììà íèæíåé òðåóãîëüíîé ÷àñòè ìàòðèöû: \033[32m" << sumLowerTriangle(m) << "\033[0m" << std::endl;
+
+    // Âûâîä ñóììû ýëåìåíòîâ â âåðõíåé òðåóãîëüíîé ÷àñòè ìàòðèöû
+    std::cout << "Ñóììà âåðõíåé òðåóãîëüíîé ÷àñòè ìàòðèöû: \033[32m" << sumUpperTriangle(m) << "\033[0m" << std::endl;
+
+    // Íàõîæäåíèå ýëåìåíòà, íàèáîëåå áëèçêîãî ê ñðåäíåìó àðèôìåòè÷åñêîìó
+    float mean = meanMatrix(m);  // Âû÷èñëåíèå ñðåäíåãî àðèôìåòè÷åñêîãî âñåõ ýëåìåíòîâ ìàòðèöû
+    std::cout << "Ýëåìåíò, íàèáîëåå áëèçêèé ê ñðåäíåìó àðèôìåòè÷åñêîìó: \033[32m" << closestToMean(m, mean) << "\033[0m" << std::endl;
+
+
+    _getch();
+    return 0;
+}

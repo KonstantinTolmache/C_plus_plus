@@ -1,0 +1,60 @@
+﻿#include <stdio.h>
+#include <locale.h>
+#include <wchar.h>
+#include <fcntl.h>
+#include <io.h>
+
+int main17(void) {
+    setlocale(LC_ALL, ""); // Íàñòðîéêà ëîêàëèçàöèè
+    _setmode(_fileno(stdout), _O_U16TEXT); // Ïåðåêëþ÷åíèå êîíñîëè íà UTF-16 äëÿ âûâîäà Unicode
+
+    wprintf(L"\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m\n"); // Çåë¸íûé òåêñò (ÔÈÎ + ãðóïïà)
+
+    FILE* in;
+    char name[] = "C:\\Users\\Admin\\source\\repos\\Cii\\Cii\\Test.txt";  // Ïîëíûé ïóòü ê ôàéëó
+
+    if (fopen_s(&in, name, "r, ccs=UTF-8") != 0) {
+        perror("Îøèáêà");
+        return 1;
+    }
+
+    wprintf(L"Ôàéë '%hs' îòêðûò óñïåøíî!\n\n", name);
+    wprintf(L"\033[35mÂ ôàéëå íàõîäèòñÿ ýòî:\033[0m\n");
+
+    // Ïðîâåðêà, ïóñòîé ëè ôàéë
+    fseek(in, 0, SEEK_END);
+    long file_size = ftell(in);
+    rewind(in);
+
+    if (file_size == 0) {
+        wprintf(L"Ôàéë ïóñò!\n");
+        fclose(in);
+        return 0;
+    }
+
+    // Èíèöèàëèçàöèÿ ñ÷åò÷èêîâ
+    int empty_count = 0;  // Ñ÷åò÷èê ïóñòûõ ñèìâîëîâ
+    int non_empty_count = 0;  // Ñ÷åò÷èê íåïóñòûõ ñèìâîëîâ
+
+    wchar_t wc;
+    while (fwscanf_s(in, L"%lc", &wc, 1) != EOF) {  // ×òåíèå ïî îäíîìó ñèìâîëó
+        // Ïîäñ÷¸ò ïóñòûõ è íåïóñòûõ ñèìâîëîâ
+        if ((wc >= 0 && wc <= 31) || wc == 32) {
+            empty_count++;  // Ïóñòîé ñèìâîë (óïðàâëÿþùèé èëè ïðîáåë)
+        }
+        else {
+            non_empty_count++;  // Íåïóñòîé ñèìâîë
+        }
+
+        // Âûâîäèì ñèìâîë
+        wprintf(L"%lc", wc);
+    }
+
+    // Âûâîäèì èòîãîâûå ïîäñ÷åòû
+    wprintf(L"\n\nÈòîãîâûå ðåçóëüòàòû:\n");
+    wprintf(L"Ïóñòûõ ñèìâîëîâ: %d\n", empty_count);
+    wprintf(L"Íåïóñòûõ ñèìâîëîâ: %d\n", non_empty_count);
+
+    fclose(in);
+    return 0;
+}

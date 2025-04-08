@@ -1,0 +1,106 @@
+﻿#include <iostream>
+#include <cstring>  // Äëÿ strlen, strcmp, strcpy_s, strcat_s
+#include <locale>   // Äëÿ ïîääåðæêè ðóññêîãî ÿçûêà
+#include <cstdlib>  // Äëÿ malloc, calloc è free
+
+// Ôóíêöèÿ îïðåäåëåíèÿ äëèíû ñòðîêè
+int dlina7(const char* str) {
+    return strlen(str);
+}
+
+// Ôóíêöèÿ êîïèðîâàíèÿ ñòðîêè 
+void kopir7(char* str1, const char* str2, size_t size) {
+    strcpy_s(str1, size, str2);
+}
+
+// Ôóíêöèÿ ñðàâíåíèÿ ñòðîê
+inline void sravn7(const char* str1, const char* str2) {
+    if (strcmp(str1, str2) == 0) {
+        std::cout << "Ñòðîêè îäèíàêîâû" << std::endl;
+    }
+    else {
+        std::cout << "Ñòðîêè ðàçíûå" << std::endl;
+    }
+}
+
+// Ôóíêöèÿ ñöåïëåíèÿ ñòðîê 
+void konkat7(char* str1, const char* str2, size_t size) {
+    strcat_s(str1, size, str2);
+}
+
+int main14() {
+    setlocale(LC_ALL, "Russian"); // Óñòàíàâëèâàåì ëîêàëèçàöèþ äëÿ ðóññêîãî ÿçûêà
+
+    std::cout << "\033[32mÑêàðåäèí À.Â. ÐÈÇ-230916ó\033[0m" << std::endl; // Çåë¸íûé öâåò ÔÈÎ Ãðóïïà
+
+    // Äèíàìè÷åñêîå âûäåëåíèå ïàìÿòè ñ èñïîëüçîâàíèåì calloc äëÿ ìàññèâà ñòðîê
+    const int numStrings = 3; // Êîëè÷åñòâî ñòðîê â ìàññèâå
+    char* strArray[numStrings]; // Ìàññèâ óêàçàòåëåé íà ñòðîêè
+
+    // Âûäåëåíèå ïàìÿòè äëÿ êàæäîé ñòðîêè
+    for (int i = 0; i < numStrings; ++i) {
+        strArray[i] = (char*)calloc(100, sizeof(char));
+        if (!strArray[i]) {
+            std::cerr << "Îøèáêà âûäåëåíèÿ ïàìÿòè!" << std::endl;
+            return 1;
+        }
+    }
+
+    std::cout << "\n\033[34mÑòðîêà äî êîïèðîâàíèÿ strArray[0]: \033[33m Äàííûå:" << strArray[0] << " \033[32m Äëèíà:" << dlina7(strArray[0]) << "\033[0m";
+    std::cout << "\n\033[34mÑòðîêà äî êîïèðîâàíèÿ strArray[1]: \033[33m Äàííûå:" << strArray[1] << " \033[32m Äëèíà:" << dlina7(strArray[1]) << "\033[0m";
+    std::cout << "\n\033[34mÑòðîêà äî êîïèðîâàíèÿ strArray[2]: \033[33m Äàííûå:" << strArray[2] << " \033[32m Äëèíà:" << dlina7(strArray[2]) << "\033[0m" << std::endl;
+
+
+    // Èíèöèàëèçàöèÿ ñòðîê â ìàññèâå
+    kopir7(strArray[0], "qwerty", 100);
+    kopir7(strArray[1], "1234567890", 100);
+    kopir7(strArray[2], "hello world", 100);
+
+    // Âûâîä äëèíû ñòðîê
+    std::cout << "\n\033[35mÑòðîêà ïîñëå êîïèðîâàíèÿ strArray[0]: \033[33m Äàííûå:" << strArray[0] <<" \033[32m Äëèíà:" << dlina7(strArray[0]) << "\033[0m";
+    std::cout << "\n\033[35mÑòðîêà ïîñëå êîïèðîâàíèÿ strArray[1]: \033[33m Äàííûå:" << strArray[1] << " \033[32m Äëèíà:" << dlina7(strArray[1]) << "\033[0m";
+    std::cout << "\n\033[35mÑòðîêà ïîñëå êîïèðîâàíèÿ strArray[2]: \033[33m Äàííûå:" << strArray[2] << " \033[32m Äëèíà:" << dlina7(strArray[2]) << "\033[0m" << std::endl << std::endl;
+
+         
+    std::cout << "\n\033[31mÑòðîêè strArray[0] è strArray[0]: \033[33m" << strArray[0] << "  è  " << strArray[0] << " \033[31m ";
+    // Ñðàâíåíèå ñòðîê strArray[0], strArray[0]
+    sravn7(strArray[0], strArray[0]);
+    std::cout << "\033[0m";
+
+    std::cout << "\n\033[36mÑòðîêè strArray[0] è strArray[1]: \033[33m" << strArray[0] << "  è  " << strArray[1] << " \033[32m";
+    // Ñðàâíåíèå ñòðîê strArray[0], strArray[1]
+    sravn7(strArray[0], strArray[1]);
+    std::cout << "\033[0m";
+
+    std::cout << "\n\033[36mÑòðîêè strArray[1] è strArray[2]: \033[33m" << strArray[1] << "  è  " << strArray[2] << " \033[32m";
+    // Ñðàâíåíèå ñòðîê strArray[1], strArray[2]
+    sravn7(strArray[1], strArray[2]);
+    std::cout << "\033[0m";
+     
+
+    std::cout << "\n\033[31m" << "strArray[0] íå çàáûâàéòå ÷òî ìû ïðèáàâëÿåì ê strArray[0] äðóãèå òèïû è îí ñîõðàíÿåò ñòðóêòóðó !" << "\033[0m" << std::endl;
+
+    // Ñöåïëåíèå ñòðîê
+    konkat7(strArray[0], "", 100);
+    std::cout << "Ðåçóëüòàò ñöåïëåíèÿ 1 (strArray[0] è \"\"): \033[32m" << strArray[0] << "\033[0m";
+
+    // Ñöåïëåíèå ñòðîê
+    konkat7(strArray[0], strArray[2], 100);
+    std::cout << "\nÐåçóëüòàò ñöåïëåíèÿ 2 (strArray[0] è strArray[2]): \033[32m" << strArray[0] << "\033[0m" ;
+
+    // Ñöåïëåíèå ñòðîê
+    konkat7(strArray[0], strArray[1], 100);
+    std::cout << "\nÐåçóëüòàò ñöåïëåíèÿ 3 (strArray[0] è strArray[1]): \033[32m" << strArray[0] << "\033[0m" << std::endl;
+
+    // Ñöåïëåíèå ñòðîê
+    konkat7(strArray[0], strArray[2], 100);
+    std::cout << "\nÐåçóëüòàò ñöåïëåíèÿ 4 (strArray[0] è strArray[2]): \033[32m" << strArray[0] << "\033[0m" << std::endl;
+
+
+    // Îñâîáîæäåíèå ïàìÿòè
+    for (int i = 0; i < numStrings; ++i) {
+        free(strArray[i]);
+    }
+
+    return 0;
+}
